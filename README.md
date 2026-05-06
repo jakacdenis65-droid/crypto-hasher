@@ -1,12 +1,12 @@
-# hash-wasm
+# crypto-hasher
 
-[![npm package](https://img.shields.io/npm/v/hash-wasm.svg)](http://npmjs.org/package/hash-wasm)
-[![Bundle size](https://badgen.net/bundlephobia/minzip/hash-wasm)](https://bundlephobia.com/result?p=hash-wasm)
-[![codecov](https://codecov.io/gh/Daninet/hash-wasm/branch/master/graph/badge.svg)](https://codecov.io/gh/Daninet/hash-wasm)
-[![Build status](https://github.com/Daninet/hash-wasm/workflows/Build%20&%20publish/badge.svg?branch=master)](https://github.com/Daninet/hash-wasm/actions)
-[![JSDelivr downloads](https://data.jsdelivr.com/v1/package/npm/hash-wasm/badge)](https://www.jsdelivr.com/package/npm/hash-wasm)
+[![npm package](https://img.shields.io/npm/v/crypto-hasher.svg)](http://npmjs.org/package/crypto-hasher)
+[![Bundle size](https://badgen.net/bundlephobia/minzip/crypto-hasher)](https://bundlephobia.com/result?p=crypto-hasher)
+[![codecov](https://codecov.io/gh/CRYPTO-HASHER/crypto-hasher/branch/master/graph/badge.svg)](https://codecov.io/gh/CRYPTO-HASHER/crypto-hasher)
+[![Build status](https://github.com/CRYPTO-HASHER/crypto-hasher/workflows/Build%20&%20publish/badge.svg?branch=master)](https://github.com/CRYPTO-HASHER/crypto-hasher/actions)
+[![JSDelivr downloads](https://data.jsdelivr.com/v1/package/npm/crypto-hasher/badge)](https://www.jsdelivr.com/package/npm/crypto-hasher)
 
-Hash-WASM is a ⚡lightning fast⚡ hash function library for browsers and Node.js.
+crypto-hasher is a ⚡lightning fast⚡ hash function library for browsers and Node.js.
 It is using hand-tuned WebAssembly binaries to calculate the hash faster than other libraries.
 
 # Supported algorithms
@@ -57,32 +57,32 @@ It is using hand-tuned WebAssembly binaries to calculate the hash faster than ot
 - Zero dependencies
 - Supports concurrent hash calculations with multiple states
 - Supports saving and loading the internal state of the hash (segmented hashing and rewinding)
-- [Unit tests](https://github.com/Daninet/hash-wasm/tree/master/test) for all algorithms
-- 100% open source & transparent [build process](https://github.com/Daninet/hash-wasm/actions)
+- [Unit tests](https://github.com/CRYPTO-HASHER/crypto-hasher/tree/master/test) for all algorithms
+- 100% open source & transparent [build process](https://github.com/CRYPTO-HASHER/crypto-hasher/actions)
 - Easy to use, Promise-based API
 
 # Installation
 
 ```
-npm i hash-wasm
+npm i crypto-hasher
 ```
 
-It can also be used directly from HTML (via [jsDelivr](https://www.jsdelivr.com/package/npm/hash-wasm)):
+It can also be used directly from HTML (via [jsDelivr](https://www.jsdelivr.com/package/npm/crypto-hasher)):
 
 ```html
 <!-- load all algortihms into the global `hashwasm` variable -->
-<script src="https://cdn.jsdelivr.net/npm/hash-wasm@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4"></script>
 
 <!-- load individual algortihms into the global `hashwasm` variable -->
-<script src="https://cdn.jsdelivr.net/npm/hash-wasm@4/dist/md5.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hash-wasm@4/dist/hmac.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4/dist/md5.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4/dist/hmac.umd.min.js"></script>
 ```
 
 # Examples
 
 ### Demo apps
 
-[Hash calculator](https://3w4be.csb.app/) - [source code](https://codesandbox.io/s/hash-wasm-3w4be?file=/src/App.tsx)
+[Hash calculator](https://3w4be.csb.app/) - [source code](https://codesandbox.io/s/crypto-hasher-3w4be?file=/src/App.tsx)
 
 [MD5 file hasher using HTML5 File API](https://stackoverflow.com/a/63287199/6251760)
 
@@ -91,7 +91,7 @@ It can also be used directly from HTML (via [jsDelivr](https://www.jsdelivr.com/
 It is the easiest and the fastest way to calculate hashes. Use it when the input buffer is already in the memory.
 
 ```javascript
-import { md5, sha1, sha512, sha3 } from "hash-wasm";
+import { md5, sha1, sha512, sha3 } from "crypto-hasher";
 
 async function run() {
   console.log("MD5:", await md5("demo"));
@@ -118,7 +118,7 @@ createXXXX() functions create new WASM instances with separate states, which can
 For the best performance, avoid calling createXXXX() functions in loops. When calculating multiple hashes sequentially, the init() function can be used to reset the internal state between runs. It is faster than creating new instances with createXXXX().
 
 ```javascript
-import { createSHA1 } from "hash-wasm";
+import { createSHA1 } from "crypto-hasher";
 
 async function run() {
   const sha1 = await createSHA1();
@@ -145,7 +145,7 @@ _\*\* See [API reference](#api)_
 The recommended process for choosing the parameters can be found here: https://tools.ietf.org/html/draft-irtf-cfrg-argon2-04#section-4
 
 ```javascript
-import { argon2id, argon2Verify } from "hash-wasm";
+import { argon2id, argon2Verify } from "crypto-hasher";
 
 async function run() {
   const salt = new Uint8Array(16);
@@ -181,7 +181,7 @@ _\*\* See [API reference](#api)_
 ### Hashing passwords with bcrypt
 
 ```javascript
-import { bcrypt, bcryptVerify } from "hash-wasm";
+import { bcrypt, bcryptVerify } from "crypto-hasher";
 
 async function run() {
   const salt = new Uint8Array(16);
@@ -216,7 +216,7 @@ _\*\* See [API reference](#api)_
 All supported hash functions can be used to calculate HMAC. For the best performance, avoid calling createXXXX() in loops (see `Advanced usage with streaming input` section above)
 
 ```javascript
-import { createHMAC, createSHA3 } from "hash-wasm";
+import { createHMAC, createSHA3 } from "crypto-hasher";
 
 async function run() {
   const hashFunc = createSHA3(224); // SHA3-224
@@ -246,7 +246,7 @@ _\*\* See [API reference](#api)_
 All supported hash functions can be used to calculate PBKDF2. For the best performance, avoid calling createXXXX() in loops (see `Advanced usage with streaming input` section above)
 
 ```javascript
-import { pbkdf2, createSHA1 } from "hash-wasm";
+import { pbkdf2, createSHA1 } from "crypto-hasher";
 
 async function run() {
   const salt = new Uint8Array(16);
@@ -283,7 +283,7 @@ You should be aware that there may be multiple UTF-8 representations of a given 
 "ü" === "ü"; // false
 ```
 
-All algorithms defined in this library depend on the binary representation of the input string. Thus, it's highly recommended to normalize your strings before passing it to hash-wasm. You can use the `normalize()` built-in String function to archive this:
+All algorithms defined in this library depend on the binary representation of the input string. Thus, it's highly recommended to normalize your strings before passing it to crypto-hasher. You can use the `normalize()` built-in String function to archive this:
 
 ```js
 "\u00fc".normalize() === "u\u0308".normalize(); // true
@@ -319,7 +319,7 @@ md5.update("world!");
 console.log(md5.digest()); // Prints 6cd3556deb0da54bca060b4c39479839 = md5("Hello, world!")
 ```
 
-_Note that both the saving and loading processes must be running compatible versions of the hash function (i.e. the hash function hasn't changed between the versions of hash-wasm used in the saving and loading processes). If the saved state is incompatible, `load()` will throw an exception._
+_Note that both the saving and loading processes must be running compatible versions of the hash function (i.e. the hash function hasn't changed between the versions of crypto-hasher used in the saving and loading processes). If the saved state is incompatible, `load()` will throw an exception._
 
 _The saved state can contain information about the input, including plaintext input bytes, so from a security perspective it must be treated with the same care as the input data itself._
 
@@ -337,7 +337,7 @@ _The saved state can contain information about the input, including plaintext in
 
 # Benchmark
 
-You can make your own measurements here: [link](https://daninet.github.io/hash-wasm-benchmark/)
+You can make your own measurements here: [link](https://CRYPTO-HASHER.github.io/crypto-hasher-benchmark/)
 
 Two scenarios were measured:
 
@@ -348,7 +348,7 @@ Results:
 
 | MD5                         | throughput (32 bytes) | throughput (1MB) |
 | --------------------------- | --------------------- | ---------------- |
-| **hash-wasm 4.10.0**        | **110.52 MB/s**       | **850.31 MB/s**  |
+| **crypto-hasher 4.10.0**    | **110.52 MB/s**       | **850.31 MB/s**  |
 | spark-md5 3.0.2 (from npm)  | 38.87 MB/s            | 171.73 MB/s      |
 | md5-wasm 2.0.0 (from npm)   | 37.36 MB/s            | 131.77 MB/s      |
 | crypto-js 4.1.1 (from npm)  | 9.30 MB/s             | 46.71 MB/s       |
@@ -359,7 +359,7 @@ Results:
 
 | SHA1                        | throughput (32 bytes) | throughput (1MB) |
 | --------------------------- | --------------------- | ---------------- |
-| **hash-wasm 4.10.0**        | **83.80 MB/s**        | **798.19 MB/s**  |
+| **crypto-hasher 4.10.0**    | **83.80 MB/s**        | **798.19 MB/s**  |
 | jsSHA 3.3.1 (from npm)      | 34.93 MB/s            | 78.12 MB/s       |
 | crypto-js 4.1.1 (from npm)  | 9.50 MB/s             | 69.02 MB/s       |
 | node-forge 1.3.1 (from npm) | 17.02 MB/s            | 32.00 MB/s       |
@@ -369,7 +369,7 @@ Results:
 
 | SHA256                        | throughput (32 bytes) | throughput (1MB) |
 | ----------------------------- | --------------------- | ---------------- |
-| **hash-wasm 4.10.0**          | **63.99 MB/s**        | **426.16 MB/s**  |
+| **crypto-hasher 4.10.0**      | **63.99 MB/s**        | **426.16 MB/s**  |
 | sha256-wasm 2.2.2 (from npm)  | 20.37 MB/s            | 308.39 MB/s      |
 | noble-hashes 1.3.2 (from npm) | 24.73 MB/s            | 110.02 MB/s      |
 | crypto-js 4.1.1 (from npm)    | 8.99 MB/s             | 65.17 MB/s       |
@@ -380,7 +380,7 @@ Results:
 
 | SHA3-512                      | throughput (32 bytes) | throughput (1MB) |
 | ----------------------------- | --------------------- | ---------------- |
-| **hash-wasm 4.10.0**          | **38.06 MB/s**        | **234.40 MB/s**  |
+| **crypto-hasher 4.10.0**      | **38.06 MB/s**        | **234.40 MB/s**  |
 | sha3-wasm 1.0.0 (from npm)    | 15.44 MB/s            | 101.51 MB/s      |
 | noble-hashes 1.3.2 (from npm) | 5.74 MB/s             | 14.19 MB/s       |
 | sha3 2.1.4 (from npm)         | 3.80 MB/s             | 10.73 MB/s       |
@@ -388,17 +388,17 @@ Results:
 
 #
 
-| XXHash64                     | throughput (32 bytes) | throughput (1MB)   |
-| ---------------------------- | --------------------- | ------------------ |
-| **hash-wasm 4.10.0**         | **101.66 MB/s**       | **15 989 MB/s** |
-| xxhash-wasm 1.0.2 (from npm) | 47.58 MB/s            | 15 929 MB/s     |
-| xxhashjs 0.2.2 (from npm)    | 0.92 MB/s             | 42.26 MB/s         |
+| XXHash64                         | throughput (32 bytes) | throughput (1MB) |
+| -------------------------------- | --------------------- | ---------------- |
+| **crypto-hasher 4.10.0**         | **101.66 MB/s**       | **15 989 MB/s**  |
+| xxcrypto-hasher 1.0.2 (from npm) | 47.58 MB/s            | 15 929 MB/s      |
+| xxhashjs 0.2.2 (from npm)        | 0.92 MB/s             | 42.26 MB/s       |
 
 #
 
 | PBKDF2-SHA512 - 1000 iterations | operations per second (16 bytes) |
 | ------------------------------- | -------------------------------- |
-| **hash-wasm 4.10.0**            | **588 ops**                      |
+| **crypto-hasher 4.10.0**        | **588 ops**                      |
 | noble-hashes 1.3.2 (from npm)   | 395 ops                          |
 | pbkdf2 3.1.2 (from npm)         | 83 ops                           |
 | crypto-js 4.1.1 (from npm)      | 29 ops                           |
@@ -407,7 +407,7 @@ Results:
 
 | Argon2id (m=512, t=8, p=1)       | operations per second (16 bytes) |
 | -------------------------------- | -------------------------------- |
-| **hash-wasm 4.10.0**             | **438 ops**                      |
+| **crypto-hasher 4.10.0**         | **438 ops**                      |
 | argon2-browser 1.18.0 (from npm) | 213 ops                          |
 | argon2-wasm-pro 1.1.0 (from npm) | 203 ops                          |
 | argon2-wasm 0.9.0 (from npm)     | 195 ops                          |
