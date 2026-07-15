@@ -1,0 +1,72 @@
+---
+title: Checksums & xxHash
+description: Adler-32, CRC-32/64, and the xxHash family for fast non-cryptographic hashing.
+---
+
+# Checksums & xxHash
+
+These algorithms are for checksums, hash tables, and integrity checks — **not** for password hashing or collision-resistant digests.
+
+## Adler-32
+
+```js
+import { adler32, createAdler32 } from "crypto-hasher";
+
+await adler32(data);
+```
+
+## CRC-32 / CRC-32C
+
+Default polynomial `0xedb88320` (standard CRC-32). Pass `0x82f63b78` for **CRC-32C** (Castagnoli):
+
+```js
+import { crc32, createCRC32 } from "crypto-hasher";
+
+await crc32(data);                 // CRC-32
+await crc32(data, 0x82f63b78);     // CRC-32C
+await createCRC32(0x82f63b78);
+```
+
+Dedicated `crc32c()` helpers were removed; use the polynomial parameter instead.
+
+## CRC-64
+
+Default ECMA polynomial `'c96c5795d7870f42'` (hex string):
+
+```js
+import { crc64, createCRC64 } from "crypto-hasher";
+
+await crc64(data);
+await crc64(data, "c96c5795d7870f42");
+```
+
+## xxHash
+
+Extremely fast non-cryptographic hashes. 64-bit seeds are split into low and high 32-bit unsigned integers.
+
+```js
+import {
+  xxhash32,
+  xxhash64,
+  xxhash3,
+  xxhash128,
+  createXXHash32,
+  createXXHash64,
+  createXXHash3,
+  createXXHash128,
+} from "crypto-hasher";
+
+await xxhash32(data, seed);
+await xxhash64(data, seedLow, seedHigh);
+await xxhash3(data, seedLow, seedHigh);
+await xxhash128(data, seedLow, seedHigh);
+```
+
+| Algorithm | Digest size | Seeds |
+| --------- | ----------- | ----- |
+| xxHash32 | 4 bytes | one 32-bit `seed` |
+| xxHash64 | 8 bytes | `seedLow`, `seedHigh` |
+| xxHash3 | 8 bytes | `seedLow`, `seedHigh` |
+| xxHash128 | 16 bytes | `seedLow`, `seedHigh` |
+
+Seeds must be unsigned 32-bit integers (`0` … `0xffffffff`).

@@ -1,0 +1,84 @@
+---
+title: Key derivation API
+description: PBKDF2, scrypt, Argon2, and bcrypt function signatures.
+---
+
+# Key derivation API
+
+## PBKDF2
+
+```ts
+interface IPBKDF2Options {
+  password: IDataType;
+  salt: IDataType;
+  iterations: number;
+  hashLength: number;
+  hashFunction: Promise<IHasher>;
+  outputType?: "hex" | "binary"; // default 'hex'
+}
+
+pbkdf2(options: IPBKDF2Options): Promise<string | Uint8Array>
+```
+
+## scrypt
+
+```ts
+interface ScryptOptions {
+  password: IDataType;
+  salt: IDataType;
+  costFactor: number;   // power of 2, ≥ 2
+  blockSize: number;
+  parallelism: number;
+  hashLength: number;
+  outputType?: "hex" | "binary"; // default 'hex'
+}
+
+scrypt(options: ScryptOptions): Promise<string | Uint8Array>
+```
+
+## Argon2
+
+```ts
+interface IArgon2Options {
+  password: IDataType;
+  salt: IDataType;          // ≥ 8 bytes
+  secret?: IDataType;       // optional keyed hashing
+  iterations: number;       // ≥ 1
+  parallelism: number;      // ≥ 1
+  memorySize: number;       // KiB; ≥ 8 * parallelism
+  hashLength: number;       // ≥ 4
+  outputType?: "hex" | "binary" | "encoded"; // default 'hex'
+}
+
+argon2i(options: IArgon2Options): Promise<string | Uint8Array>
+argon2d(options: IArgon2Options): Promise<string | Uint8Array>
+argon2id(options: IArgon2Options): Promise<string | Uint8Array>
+
+argon2Verify(options: {
+  password: IDataType;
+  secret?: IDataType;
+  hash: string; // encoded form
+}): Promise<boolean>
+```
+
+`argon2Verify` only accepts hashes produced with `outputType: "encoded"` (PHC string format with `v=19`).
+
+## bcrypt
+
+```ts
+interface BcryptOptions {
+  password: IDataType;      // 1–72 bytes
+  salt: IDataType;          // exactly 16 bytes
+  costFactor: number;       // 4–31
+  outputType?: "hex" | "binary" | "encoded"; // default 'encoded'
+}
+
+bcrypt(options: BcryptOptions): Promise<string | Uint8Array>
+
+bcryptVerify(options: {
+  password: IDataType;
+  hash: string; // 60-char encoded bcrypt string
+}): Promise<boolean>
+```
+
+Guide: [Password hashing](/guides/passwords).

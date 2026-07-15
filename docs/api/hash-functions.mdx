@@ -1,0 +1,103 @@
+---
+title: Hash functions
+description: Shorthand and create* APIs for every hash algorithm.
+---
+
+# Hash functions
+
+Unless noted, shorthand functions return `Promise<string>` (hex). Matching `create*` functions return `Promise<IHasher>`.
+
+```ts
+type IDataType = string | Buffer | Uint8Array | Uint16Array | Uint32Array;
+```
+
+## Checksums
+
+```ts
+adler32(data: IDataType): Promise<string>
+createAdler32(): Promise<IHasher>
+
+crc32(data: IDataType, polynomial?: number): Promise<string>
+createCRC32(polynomial?: number): Promise<IHasher>
+// default polynomial 0xedb88320; CRC-32C = 0x82f63b78
+
+crc64(data: IDataType, polynomial?: string): Promise<string>
+createCRC64(polynomial?: string): Promise<IHasher>
+// default polynomial 'c96c5795d7870f42' (ECMA)
+```
+
+## MD / SHA / others
+
+```ts
+md4(data: IDataType): Promise<string>
+createMD4(): Promise<IHasher>
+
+md5(data: IDataType): Promise<string>
+createMD5(): Promise<IHasher>
+
+sha1(data: IDataType): Promise<string>
+createSHA1(): Promise<IHasher>
+
+sha224(data: IDataType): Promise<string>
+createSHA224(): Promise<IHasher>
+
+sha256(data: IDataType): Promise<string>
+createSHA256(): Promise<IHasher>
+
+sha384(data: IDataType): Promise<string>
+createSHA384(): Promise<IHasher>
+
+sha512(data: IDataType): Promise<string>
+createSHA512(): Promise<IHasher>
+
+sha3(data: IDataType, bits?: 224 | 256 | 384 | 512): Promise<string>
+createSHA3(bits?: 224 | 256 | 384 | 512): Promise<IHasher>
+// default bits = 512
+
+keccak(data: IDataType, bits?: 224 | 256 | 384 | 512): Promise<string>
+createKeccak(bits?: 224 | 256 | 384 | 512): Promise<IHasher>
+// default bits = 512
+
+ripemd160(data: IDataType): Promise<string>
+createRIPEMD160(): Promise<IHasher>
+
+sm3(data: IDataType): Promise<string>
+createSM3(): Promise<IHasher>
+
+whirlpool(data: IDataType): Promise<string>
+createWhirlpool(): Promise<IHasher>
+```
+
+## BLAKE
+
+```ts
+blake2b(data: IDataType, bits?: number, key?: IDataType): Promise<string>
+createBLAKE2b(bits?: number, key?: IDataType): Promise<IHasher>
+// bits: 8..512 step 8, default 512; key ≤ 64 bytes
+
+blake2s(data: IDataType, bits?: number, key?: IDataType): Promise<string>
+createBLAKE2s(bits?: number, key?: IDataType): Promise<IHasher>
+// bits: 8..256 step 8, default 256; key ≤ 32 bytes
+
+blake3(data: IDataType, bits?: number, key?: IDataType): Promise<string>
+createBLAKE3(bits?: number, key?: IDataType): Promise<IHasher>
+// bits: multiple of 8, default 256; key exactly 32 bytes if set
+```
+
+## xxHash
+
+```ts
+xxhash32(data: IDataType, seed?: number): Promise<string>
+createXXHash32(seed?: number): Promise<IHasher>
+
+xxhash64(data: IDataType, seedLow?: number, seedHigh?: number): Promise<string>
+createXXHash64(seedLow?: number, seedHigh?: number): Promise<IHasher>
+
+xxhash3(data: IDataType, seedLow?: number, seedHigh?: number): Promise<string>
+createXXHash3(seedLow?: number, seedHigh?: number): Promise<IHasher>
+
+xxhash128(data: IDataType, seedLow?: number, seedHigh?: number): Promise<string>
+createXXHash128(seedLow?: number, seedHigh?: number): Promise<IHasher>
+```
+
+Seeds are unsigned 32-bit integers. For 64-bit algorithms, `seedLow` / `seedHigh` form a 64-bit seed in little-endian order.

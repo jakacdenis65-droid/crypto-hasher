@@ -1,0 +1,42 @@
+---
+title: HMAC API
+description: createHMAC signature and behavior.
+---
+
+# HMAC API
+
+```ts
+createHMAC(
+  hashFunction: Promise<IHasher>,
+  key: IDataType,
+): Promise<IHasher>
+```
+
+## Parameters
+
+| Name | Description |
+| ---- | ----------- |
+| `hashFunction` | Promise returned by `createSHA1()`, `createSHA256()`, `createSHA3(256)`, etc. |
+| `key` | HMAC key (`string`, `Buffer`, or typed array) |
+
+## Returns
+
+A promise resolving to an `IHasher` that applies HMAC with the given underlying digest.
+
+## Notes
+
+- Passing a non-thenable value throws:  
+  `Invalid hash function is provided! Usage: createHMAC(createMD5(), "key").`
+- Keys longer than `hasher.blockSize` are hashed with the underlying algorithm first.
+- `save()` and `load()` throw on HMAC hashers.
+
+## Example
+
+```ts
+import { createHMAC, createSHA256 } from "crypto-hasher";
+
+const hmac = await createHMAC(createSHA256(), "secret");
+const mac = hmac.init().update("message").digest();
+```
+
+Guide: [HMAC](/guides/hmac).

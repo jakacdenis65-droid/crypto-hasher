@@ -1,0 +1,65 @@
+---
+title: Installation
+description: Install crypto-hasher via npm or load it from a CDN.
+---
+
+# Installation
+
+## npm / yarn / pnpm
+
+```bash
+npm install crypto-hasher
+```
+
+```bash
+yarn add crypto-hasher
+```
+
+```bash
+pnpm add crypto-hasher
+```
+
+Then import only the algorithms you need:
+
+```js
+import { sha256, createSHA256, argon2id } from "crypto-hasher";
+```
+
+Because each algorithm is a separate module, bundlers that support tree-shaking (Webpack, Rollup, Vite, esbuild) only include the WASM binaries you actually use.
+
+## CDN (jsDelivr)
+
+You can also load crypto-hasher directly in the browser. Algorithms are exposed on the global `hashwasm` object.
+
+**All algorithms:**
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4"></script>
+<script>
+  hashwasm.md5("hello").then(console.log);
+</script>
+```
+
+**Individual algorithms** (smaller download):
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4/dist/md5.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4/dist/sha256.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4/dist/hmac.umd.min.js"></script>
+```
+
+See [CDN & browsers](/guides/cdn) for more details.
+
+## Requirements
+
+| Runtime | Minimum version |
+| ------- | --------------- |
+| Chrome | 57+ |
+| Safari | 11+ |
+| Firefox | 53+ |
+| Edge | 16+ |
+| Node.js | 8+ |
+| Deno | 1+ |
+| Internet Explorer | Not supported |
+
+WebAssembly must be available in the runtime.

@@ -1,0 +1,161 @@
+{
+  "$schema": "https://docs.page/schema.json",
+  "name": "crypto-hasher",
+  "description": "Lightning-fast hash functions for browsers and Node.js using hand-tuned WebAssembly binaries.",
+  "theme": {
+    "primary": "#0D9488"
+  },
+  "social": {
+    "github": "CRYPTO-HASHER/crypto-hasher"
+  },
+  "header": {
+    "showName": true
+  },
+  "anchors": [
+    {
+      "title": "npm",
+      "href": "https://www.npmjs.com/package/crypto-hasher",
+      "icon": "cube"
+    },
+    {
+      "title": "Benchmarks",
+      "href": "https://CRYPTO-HASHER.github.io/crypto-hasher-benchmark/",
+      "icon": "gauge-high"
+    }
+  ],
+  "sidebar": [
+    {
+      "group": "Getting Started",
+      "icon": "rocket",
+      "pages": [
+        {
+          "title": "Introduction",
+          "href": "/",
+          "icon": "book-open"
+        },
+        {
+          "title": "Installation",
+          "href": "/installation",
+          "icon": "download"
+        },
+        {
+          "title": "Quickstart",
+          "href": "/quickstart",
+          "icon": "bolt"
+        }
+      ]
+    },
+    {
+      "group": "Guides",
+      "icon": "graduation-cap",
+      "pages": [
+        {
+          "title": "Hashing data",
+          "href": "/guides/hashing"
+        },
+        {
+          "title": "Streaming & chunked input",
+          "href": "/guides/streaming"
+        },
+        {
+          "title": "Password hashing",
+          "href": "/guides/passwords"
+        },
+        {
+          "title": "HMAC",
+          "href": "/guides/hmac"
+        },
+        {
+          "title": "PBKDF2",
+          "href": "/guides/pbkdf2"
+        },
+        {
+          "title": "Resumable hashing",
+          "href": "/guides/resumable"
+        },
+        {
+          "title": "String encoding",
+          "href": "/guides/string-encoding"
+        },
+        {
+          "title": "CDN & browsers",
+          "href": "/guides/cdn"
+        }
+      ]
+    },
+    {
+      "group": "Algorithms",
+      "icon": "layer-group",
+      "pages": [
+        {
+          "title": "Overview",
+          "href": "/algorithms"
+        },
+        {
+          "title": "Cryptographic hashes",
+          "href": "/algorithms/cryptographic"
+        },
+        {
+          "title": "BLAKE family",
+          "href": "/algorithms/blake"
+        },
+        {
+          "title": "Checksums & xxHash",
+          "href": "/algorithms/checksums"
+        },
+        {
+          "title": "Password & KDF",
+          "href": "/algorithms/password-kdf"
+        }
+      ]
+    },
+    {
+      "group": "API Reference",
+      "icon": "code",
+      "pages": [
+        {
+          "title": "Overview",
+          "href": "/api"
+        },
+        {
+          "title": "Types",
+          "href": "/api/types"
+        },
+        {
+          "title": "Hash functions",
+          "href": "/api/hash-functions"
+        },
+        {
+          "title": "IHasher interface",
+          "href": "/api/hasher"
+        },
+        {
+          "title": "HMAC",
+          "href": "/api/hmac"
+        },
+        {
+          "title": "Key derivation",
+          "href": "/api/key-derivation"
+        }
+      ]
+    },
+    {
+      "group": "More",
+      "icon": "ellipsis",
+      "pages": [
+        {
+          "title": "Benchmarks",
+          "href": "/benchmarks"
+        },
+        {
+          "title": "Browser support",
+          "href": "/browser-support"
+        },
+        {
+          "title": "Changelog",
+          "href": "/changelog"
+        }
+      ]
+    }
+  ]
+}

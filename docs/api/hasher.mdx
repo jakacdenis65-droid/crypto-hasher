@@ -1,0 +1,65 @@
+---
+title: IHasher interface
+description: Streaming hasher methods returned by create* functions.
+---
+
+# IHasher interface
+
+```ts
+interface IHasher {
+  init: () => IHasher;
+  update: (data: IDataType) => IHasher;
+  digest: {
+    (outputType: "binary"): Uint8Array;
+    (outputType?: "hex"): string;
+  };
+  save: () => Uint8Array;
+  load: (state: Uint8Array) => IHasher;
+  blockSize: number;
+  digestSize: number;
+}
+```
+
+## Methods
+
+### `init()`
+
+Resets the internal state to the algorithm’s initial values. Must be called before `update()` / `digest()` on a fresh or already-finalized hasher. Returns `this` for chaining.
+
+### `update(data)`
+
+Absorbs more input. Can be called many times. Throws if called before `init()` (or after `digest()` without a new `init()`).
+
+### `digest(outputType?)`
+
+Finalizes the hash.
+
+- Omitting `outputType` or passing `'hex'` → hexadecimal `string`
+- Passing `'binary'` → `Uint8Array` of length `digestSize`
+
+After `digest()`, call `init()` again before further updates.
+
+### `save()`
+
+Returns a `Uint8Array` snapshot of the internal state for later `load()`. Only valid after `init()`/`load()` and before `digest()`. See [Resumable hashing](/guides/resumable).
+
+### `load(state)`
+
+Restores a previously saved state. Throws if the buffer length or WASM version prefix is incompatible. Marks the hasher as initialized.
+
+## Properties
+
+| Property | Meaning |
+| -------- | ------- |
+| `blockSize` | Internal block size in bytes (e.g. 64 for SHA-256, 128 for SHA-512 / BLAKE2b) |
+| `digestSize` | Output size in bytes |
+
+## Errors
+
+Typical runtime errors:
+
+- `update() called before init()`
+- `digest() called before init()`
+- `save() can only be called after init() and before digest()`
+- Incompatible or wrong-length state passed to `load()`
+- `save() not supported` / `load() not supported` on HMAC instances

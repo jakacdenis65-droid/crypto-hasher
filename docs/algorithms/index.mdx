@@ -1,0 +1,43 @@
+---
+title: Algorithms
+description: Supported hash algorithms and approximate gzipped bundle sizes.
+---
+
+# Algorithms
+
+Each algorithm compiles to its own WebAssembly binary. Approximate gzipped sizes for the published bundles:
+
+| Name | Bundle size (gzipped) |
+| ---- | --------------------- |
+| Adler-32 | 3 kB |
+| Argon2 (Argon2d, Argon2i, Argon2id v1.3) | 11 kB |
+| bcrypt | 11 kB |
+| BLAKE2b | 6 kB |
+| BLAKE2s | 5 kB |
+| BLAKE3 | 9 kB |
+| CRC32 | 3 kB |
+| CRC64 | 4 kB |
+| HMAC | — (uses underlying hash) |
+| MD4 | 4 kB |
+| MD5 | 4 kB |
+| PBKDF2 | — (uses underlying hash) |
+| RIPEMD-160 | 5 kB |
+| scrypt | 10 kB |
+| SHA-1 | 5 kB |
+| SHA-2: SHA-224, SHA-256 | 7 kB |
+| SHA-2: SHA-384, SHA-512 | 8 kB |
+| SHA-3: SHA3-224, SHA3-256, SHA3-384, SHA3-512 | 4 kB |
+| Keccak-224, Keccak-256, Keccak-384, Keccak-512 | 4 kB |
+| SM3 | 4 kB |
+| Whirlpool | 6 kB |
+| xxHash32 | 3 kB |
+| xxHash64 | 4 kB |
+| xxHash3 | 7 kB |
+| xxHash128 | 8 kB |
+
+## By category
+
+- [Cryptographic hashes](/algorithms/cryptographic) — MD, SHA-1/2/3, Keccak, RIPEMD, SM3, Whirlpool
+- [BLAKE family](/algorithms/blake) — BLAKE2b, BLAKE2s, BLAKE3
+- [Checksums & xxHash](/algorithms/checksums) — Adler-32, CRC, xxHash
+- [Password & KDF](/algorithms/password-kdf) — Argon2, bcrypt, scrypt, PBKDF2, HMAC

@@ -1,0 +1,30 @@
+---
+title: Browser support
+description: Minimum browser, Node.js, and Deno versions that support crypto-hasher.
+---
+
+# Browser support
+
+crypto-hasher requires WebAssembly.
+
+| Environment | Minimum version |
+| ----------- | --------------- |
+| Chrome | 57+ |
+| Safari | 11+ |
+| Firefox | 53+ |
+| Edge | 16+ |
+| Internet Explorer | Not supported |
+| Node.js | 8+ |
+| Deno | 1+ |
+
+Also supported:
+
+- Modern bundlers (Webpack, Rollup, Vite, esbuild, …) with tree-shaking
+- Environments **without** a bundler (UMD / CDN builds)
+- [Web Workers](/guides/cdn)
+
+If `WebAssembly` is missing, initialization throws:
+
+```text
+WebAssembly is not supported in this environment!
+```

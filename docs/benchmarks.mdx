@@ -1,0 +1,83 @@
+---
+title: Benchmarks
+description: Throughput comparisons against other JavaScript and WASM hashing libraries.
+---
+
+# Benchmarks
+
+Run live measurements in your browser: [crypto-hasher-benchmark](https://CRYPTO-HASHER.github.io/crypto-hasher-benchmark/).
+
+Figures below were measured with **crypto-hasher 4.10.0** in **Chrome v131** on a **Ryzen 9 7900X**.
+
+Two scenarios:
+
+1. Throughput with the shorthand API — **32-byte** inputs
+2. Throughput with the shorthand API — **1 MB** inputs
+
+## MD5
+
+| Library | 32 bytes | 1 MB |
+| ------- | -------- | ---- |
+| **crypto-hasher 4.10.0** | **110.52 MB/s** | **850.31 MB/s** |
+| spark-md5 3.0.2 | 38.87 MB/s | 171.73 MB/s |
+| md5-wasm 2.0.0 | 37.36 MB/s | 131.77 MB/s |
+| crypto-js 4.1.1 | 9.30 MB/s | 46.71 MB/s |
+| node-forge 1.3.1 | 18.23 MB/s | 28.94 MB/s |
+| md5 2.3.0 | 14.50 MB/s | 21.65 MB/s |
+
+## SHA-1
+
+| Library | 32 bytes | 1 MB |
+| ------- | -------- | ---- |
+| **crypto-hasher 4.10.0** | **83.80 MB/s** | **798.19 MB/s** |
+| jsSHA 3.3.1 | 34.93 MB/s | 78.12 MB/s |
+| crypto-js 4.1.1 | 9.50 MB/s | 69.02 MB/s |
+| node-forge 1.3.1 | 17.02 MB/s | 32.00 MB/s |
+| sha1 1.1.1 | 14.68 MB/s | 24.24 MB/s |
+
+## SHA-256
+
+| Library | 32 bytes | 1 MB |
+| ------- | -------- | ---- |
+| **crypto-hasher 4.10.0** | **63.99 MB/s** | **426.16 MB/s** |
+| sha256-wasm 2.2.2 | 20.37 MB/s | 308.39 MB/s |
+| noble-hashes 1.3.2 | 24.73 MB/s | 110.02 MB/s |
+| crypto-js 4.1.1 | 8.99 MB/s | 65.17 MB/s |
+| jsSHA 3.3.1 | 25.64 MB/s | 57.98 MB/s |
+| node-forge 1.3.1 | 13.93 MB/s | 28.19 MB/s |
+
+## SHA3-512
+
+| Library | 32 bytes | 1 MB |
+| ------- | -------- | ---- |
+| **crypto-hasher 4.10.0** | **38.06 MB/s** | **234.40 MB/s** |
+| sha3-wasm 1.0.0 | 15.44 MB/s | 101.51 MB/s |
+| noble-hashes 1.3.2 | 5.74 MB/s | 14.19 MB/s |
+| sha3 2.1.4 | 3.80 MB/s | 10.73 MB/s |
+| jsSHA 3.2.0 | 2.08 MB/s | 3.82 MB/s |
+
+## xxHash64
+
+| Library | 32 bytes | 1 MB |
+| ------- | -------- | ---- |
+| **crypto-hasher 4.10.0** | **101.66 MB/s** | **15 989 MB/s** |
+| xxcrypto-hasher 1.0.2 | 47.58 MB/s | 15 929 MB/s |
+| xxhashjs 0.2.2 | 0.92 MB/s | 42.26 MB/s |
+
+## PBKDF2-SHA512 (1000 iterations)
+
+| Library | Ops/sec (16-byte password) |
+| ------- | -------------------------- |
+| **crypto-hasher 4.10.0** | **588** |
+| noble-hashes 1.3.2 | 395 |
+| pbkdf2 3.1.2 | 83 |
+| crypto-js 4.1.1 | 29 |
+
+## Argon2id (m=512, t=8, p=1)
+
+| Library | Ops/sec (16-byte password) |
+| ------- | -------------------------- |
+| **crypto-hasher 4.10.0** | **438** |
+| argon2-browser 1.18.0 | 213 |
+| argon2-wasm-pro 1.1.0 | 203 |
+| argon2-wasm 0.9.0 | 195 |

@@ -1,0 +1,68 @@
+---
+title: Hashing data
+description: Use shorthand hash functions for one-shot hashing of in-memory data.
+---
+
+# Hashing data
+
+The shorthand API is the fastest way to hash when the full input is already available. Each call compiles (or reuses) a shared WASM module, computes the digest, and returns a hex string.
+
+## Basic usage
+
+```js
+import { md5, sha256, blake3, xxhash64 } from "crypto-hasher";
+
+await md5("hello");
+await sha256(new Uint8Array([1, 2, 3]));
+await blake3("payload", 256);
+await xxhash64("fast-checksum", 0, 0);
+```
+
+## Input types
+
+Every hash function accepts `IDataType`:
+
+| Type | Notes |
+| ---- | ----- |
+| `string` | Encoded as UTF-8 |
+| `Buffer` | Node.js only |
+| `Uint8Array` / `Uint16Array` / `Uint32Array` | Interpreted as raw bytes |
+
+See [String encoding](/guides/string-encoding) before hashing Unicode strings — equivalent-looking characters can have different byte sequences.
+
+## Algorithms with extra parameters
+
+Some functions take optional parameters for digest size, seed, key, or polynomial:
+
+```js
+import {
+  sha3,
+  keccak,
+  blake2b,
+  blake2s,
+  blake3,
+  crc32,
+  crc64,
+  xxhash32,
+  xxhash64,
+} from "crypto-hasher";
+
+await sha3(data, 256);           // 224 | 256 | 384 | 512 (default 512)
+await keccak(data, 256);         // same bit lengths (default 512)
+await blake2b(data, 512, key);   // bits 8–512 step 8; optional key ≤ 64 bytes
+await blake2s(data, 256, key);   // bits 8–256 step 8; optional key ≤ 32 bytes
+await blake3(data, 256, key);    // bits multiple of 8; key must be 32 bytes if set
+await crc32(data);               // default poly 0xedb88320
+await crc32(data, 0x82f63b78);   // CRC-32C
+await crc64(data);               // default ECMA poly 'c96c5795d7870f42'
+await xxhash32(data, seed);      // optional 32-bit seed
+await xxhash64(data, seedLow, seedHigh);
+```
+
+## Performance tips
+
+1. Prefer shorthand functions for one-shot hashes of in-memory data.
+2. Reuse a single `create*` instance with `.init()` between sequential hashes instead of creating new instances in a loop.
+3. Import only the algorithms you need so unused WASM binaries are tree-shaken away.
+
+For chunked input, use [Streaming & chunked input](/guides/streaming).

@@ -1,0 +1,58 @@
+---
+title: CDN & browsers
+description: Use crypto-hasher from a script tag, Web Workers, and without a bundler.
+---
+
+# CDN & browsers
+
+## Script tag
+
+Load the full UMD build or individual algorithm builds from jsDelivr. Functions hang off the global `hashwasm` object.
+
+```html
+<!-- all algorithms -->
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4"></script>
+
+<script>
+  async function main() {
+    const digest = await hashwasm.sha256("hello from the browser");
+    console.log(digest);
+  }
+  main();
+</script>
+```
+
+Per-algorithm builds keep pages smaller:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4/dist/md5.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-hasher@4/dist/hmac.umd.min.js"></script>
+```
+
+## Without Webpack
+
+WASM modules are embedded as base64 inside the published JS. You do not need a special loader, CORS setup for `.wasm` files, or a bundler plugin.
+
+## Web Workers
+
+crypto-hasher works inside Web Workers. Import or `importScripts` the same builds you use on the main thread:
+
+```js
+// worker.js
+import { createSHA256 } from "crypto-hasher";
+
+self.onmessage = async (event) => {
+  const hasher = await createSHA256();
+  hasher.init().update(event.data);
+  self.postMessage(hasher.digest());
+};
+```
+
+## Demo apps
+
+- [Hash calculator](https://3w4be.csb.app/) — [source](https://codesandbox.io/s/crypto-hasher-3w4be?file=/src/App.tsx)
+- [MD5 file hasher with the HTML5 File API](https://stackoverflow.com/a/63287199/6251760)
+
+## Interactive benchmarks
+
+Run measurements in your own browser: [crypto-hasher-benchmark](https://CRYPTO-HASHER.github.io/crypto-hasher-benchmark/).

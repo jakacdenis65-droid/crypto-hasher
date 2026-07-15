@@ -1,0 +1,48 @@
+---
+title: HMAC
+description: Compute Hash-based Message Authentication Codes with any supported digest.
+---
+
+# HMAC
+
+`createHMAC` builds an HMAC hasher on top of any `create*` hash function. The result is an `IHasher` you can use like other streaming hashers.
+
+## Example
+
+```js
+import { createHMAC, createSHA3 } from "crypto-hasher";
+
+async function run() {
+  const hashFunc = createSHA3(224);
+  const hmac = await createHMAC(hashFunc, "key");
+
+  const fruits = ["apple", "raspberry", "watermelon"];
+
+  const codes = fruits.map((data) => {
+    hmac.init();
+    hmac.update(data);
+    return hmac.digest();
+  });
+
+  console.log(codes);
+}
+
+run();
+```
+
+## Usage notes
+
+- Pass the **promise** returned by `createSHA1()`, `createSHA256()`, etc. — not a resolved hasher and not a shorthand function like `sha1`.
+- Reuse one HMAC instance with `init()` between messages; avoid creating new HMAC instances in a loop.
+- `save()` / `load()` are **not supported** for HMAC and will throw.
+- Keys longer than the underlying hash block size are hashed automatically, matching the HMAC specification.
+
+```js
+import { createHMAC, createSHA256 } from "crypto-hasher";
+
+const hmac = await createHMAC(createSHA256(), secretKey);
+hmac.init().update(message);
+const mac = hmac.digest("binary");
+```
+
+See also [API: HMAC](/api/hmac) and [PBKDF2](/guides/pbkdf2), which uses HMAC internally.

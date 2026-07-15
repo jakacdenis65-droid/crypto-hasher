@@ -1,0 +1,80 @@
+---
+title: Quickstart
+description: Hash a string or buffer in a few lines of code.
+---
+
+# Quickstart
+
+## Hash a string
+
+```js
+import { md5, sha1, sha256, sha3 } from "crypto-hasher";
+
+async function run() {
+  console.log("MD5:", await md5("demo"));
+  console.log("SHA-1:", await sha1("demo"));
+  console.log("SHA-256:", await sha256("demo"));
+  console.log("SHA3-256:", await sha3("demo", 256));
+}
+
+run();
+```
+
+All shorthand hash functions are async and return a **hexadecimal string** by default.
+
+## Hash binary data
+
+`IDataType` accepts strings, Node.js `Buffer`s, and typed arrays (`Uint8Array`, `Uint16Array`, `Uint32Array`):
+
+```js
+import { sha512 } from "crypto-hasher";
+
+const bytes = new Uint8Array([0, 1, 2, 3]);
+console.log(await sha512(bytes));
+
+const words = new Uint32Array([1056, 641]);
+console.log(await sha3(words, 256));
+```
+
+## Stream large input
+
+When data arrives in chunks (files, network streams), use a `create*` hasher:
+
+```js
+import { createSHA1 } from "crypto-hasher";
+
+async function hashFile(chunks) {
+  const sha1 = await createSHA1();
+  sha1.init();
+
+  for (const chunk of chunks) {
+    sha1.update(chunk);
+  }
+
+  return sha1.digest("binary"); // Uint8Array
+}
+```
+
+Prefer shorthand functions when the full buffer is already in memory — they reuse a shared WASM instance and are faster for repeated one-shot hashes.
+
+## Hash a password
+
+```js
+import { argon2id, argon2Verify } from "crypto-hasher";
+
+const salt = crypto.getRandomValues(new Uint8Array(16));
+
+const hash = await argon2id({
+  password: "correct horse battery staple",
+  salt,
+  parallelism: 1,
+  iterations: 256,
+  memorySize: 512,
+  hashLength: 32,
+  outputType: "encoded",
+});
+
+const valid = await argon2Verify({ password: "correct horse battery staple", hash });
+```
+
+Continue with [Hashing data](/guides/hashing) or [Password hashing](/guides/passwords).

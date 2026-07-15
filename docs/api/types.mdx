@@ -1,0 +1,51 @@
+---
+title: Types
+description: Shared TypeScript types used across crypto-hasher.
+---
+
+# Types
+
+## `IDataType`
+
+Accepted input for hashes, keys, salts, and passwords:
+
+```ts
+type IDataType = string | Buffer | Uint8Array | Uint16Array | Uint32Array;
+```
+
+- Strings are encoded as UTF-8 (see [String encoding](/guides/string-encoding)).
+- `Buffer` is available in Node.js.
+- Typed arrays are read as raw bytes from their underlying buffer view.
+
+## `IHasher`
+
+Streaming hasher returned by every `create*` function (and by `createHMAC`):
+
+```ts
+interface IHasher {
+  init: () => IHasher;
+  update: (data: IDataType) => IHasher;
+  digest: {
+    (outputType: "binary"): Uint8Array;
+    (outputType?: "hex"): string;
+  };
+  save: () => Uint8Array;
+  load: (state: Uint8Array) => IHasher;
+  blockSize: number;  // bytes
+  digestSize: number; // bytes
+}
+```
+
+Details: [IHasher interface](/api/hasher).
+
+## Output types
+
+| API | Default | Alternatives |
+| --- | ------- | ------------ |
+| Shorthand hashes (`md5`, …) | hex `string` | — |
+| `IHasher.digest` | `'hex'` | `'binary'` → `Uint8Array` |
+| `pbkdf2` / `scrypt` | `'hex'` | `'binary'` |
+| `argon2*` | `'hex'` | `'binary'`, `'encoded'` |
+| `bcrypt` | `'encoded'` | `'hex'`, `'binary'` |
+
+When TypeScript sees `outputType: "binary"`, the return type narrows to `Promise<Uint8Array>`.

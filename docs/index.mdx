@@ -1,0 +1,63 @@
+---
+title: Introduction
+description: Lightning-fast hash functions for browsers and Node.js using hand-tuned WebAssembly binaries.
+---
+
+# crypto-hasher
+
+**crypto-hasher** is a high-performance hash function library for browsers and Node.js. Algorithms are compiled from heavily optimized C into modular WebAssembly binaries, so hashing is typically much faster than pure JavaScript implementations.
+
+## Why crypto-hasher?
+
+- **Fast** — hand-tuned WASM binaries outperform common JS / WASM hashing libraries (see [Benchmarks](/benchmarks))
+- **Lightweight** — each algorithm ships as its own small WASM module (often only a few kilobytes gzipped)
+- **Modular** — import only what you use; tree-shaking friendly
+- **Universal** — works in modern browsers, Node.js, Deno, and Web Workers
+- **Streaming** — process large data in chunks without loading everything into memory
+- **Resumable** — save and restore hasher state across process boundaries
+- **Typed** — includes TypeScript definitions
+- **Zero dependencies** — WASM binaries are embedded as base64 strings
+
+## Supported algorithms
+
+| Category | Algorithms |
+| -------- | ---------- |
+| Classic hashes | MD4, MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, RIPEMD-160, SM3, Whirlpool |
+| SHA-3 / Keccak | SHA3-224/256/384/512, Keccak-224/256/384/512 |
+| BLAKE | BLAKE2b, BLAKE2s, BLAKE3 |
+| Checksums | Adler-32, CRC-32, CRC-32C, CRC-64 |
+| Fast non-crypto | xxHash32, xxHash64, xxHash3, xxHash128 |
+| MAC / KDF | HMAC, PBKDF2, scrypt |
+| Password hashing | Argon2i, Argon2d, Argon2id, bcrypt |
+
+See the full list with bundle sizes in [Algorithms](/algorithms).
+
+## Two ways to hash
+
+**Shorthand** — one call when the full input is already in memory:
+
+```js
+import { md5 } from "crypto-hasher";
+
+const hash = await md5("demo");
+// "fe01d67a002dfa0f3ac084298142eccf"
+```
+
+**Streaming** — create a hasher for chunked or concurrent work:
+
+```js
+import { createSHA256 } from "crypto-hasher";
+
+const hasher = await createSHA256();
+hasher.init();
+hasher.update(chunk1);
+hasher.update(chunk2);
+const hash = hasher.digest(); // hex string by default
+```
+
+## Next steps
+
+- [Install](/installation) the package
+- Follow the [Quickstart](/quickstart)
+- Browse [Guides](/guides/hashing) for passwords, HMAC, streaming, and more
+- Check the [API reference](/api)

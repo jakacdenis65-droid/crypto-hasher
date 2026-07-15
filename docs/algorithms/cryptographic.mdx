@@ -1,0 +1,101 @@
+---
+title: Cryptographic hashes
+description: MD4/5, SHA-1/2/3, Keccak, RIPEMD-160, SM3, and Whirlpool.
+---
+
+# Cryptographic hashes
+
+## MD4 / MD5
+
+```js
+import { md4, md5, createMD4, createMD5 } from "crypto-hasher";
+
+await md5("demo");
+const h = await createMD5();
+h.init().update("demo");
+h.digest();
+```
+
+MD4 and MD5 are **not** suitable for cryptographic security (collision resistance is broken). They remain useful for checksums and legacy interoperability.
+
+## SHA-1
+
+```js
+import { sha1, createSHA1 } from "crypto-hasher";
+
+await sha1(data);
+```
+
+SHA-1 is deprecated for signatures and collision-sensitive uses. Prefer SHA-256 or SHA-3 for new designs.
+
+## SHA-2
+
+| Function | Digest size |
+| -------- | ----------- |
+| `sha224` / `createSHA224` | 224 bits |
+| `sha256` / `createSHA256` | 256 bits |
+| `sha384` / `createSHA384` | 384 bits |
+| `sha512` / `createSHA512` | 512 bits |
+
+```js
+import { sha256, sha512 } from "crypto-hasher";
+
+await sha256(data);
+await sha512(data);
+```
+
+SHA-224/256 share one WASM binary; SHA-384/512 share another.
+
+## SHA-3
+
+FIPS 202 SHA-3 with selectable length:
+
+```js
+import { sha3, createSHA3 } from "crypto-hasher";
+
+await sha3(data);        // 512-bit default
+await sha3(data, 256);   // SHA3-256
+await createSHA3(384);
+```
+
+Valid `bits`: `224 | 256 | 384 | 512`.
+
+## Keccak
+
+Original Keccak (pre-SHA-3 padding). Same bit lengths as SHA-3:
+
+```js
+import { keccak, createKeccak } from "crypto-hasher";
+
+await keccak(data, 256);
+```
+
+## RIPEMD-160
+
+```js
+import { ripemd160, createRIPEMD160 } from "crypto-hasher";
+
+await ripemd160(data);
+```
+
+Common in Bitcoin and similar address encoding pipelines.
+
+## SM3
+
+Chinese national hash standard (256-bit output):
+
+```js
+import { sm3, createSM3 } from "crypto-hasher";
+
+await sm3(data);
+```
+
+## Whirlpool
+
+512-bit Whirlpool hash:
+
+```js
+import { whirlpool, createWhirlpool } from "crypto-hasher";
+
+await whirlpool(data);
+```

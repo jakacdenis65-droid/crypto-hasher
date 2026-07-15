@@ -28,7 +28,6 @@ dist
 wasm
 .bench
 
-docs
 benchmark*.js
 
 test.html

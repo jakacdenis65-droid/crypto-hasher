@@ -1,0 +1,89 @@
+---
+title: Streaming & chunked input
+description: Hash large or streaming data with create* hasher instances.
+---
+
+# Streaming & chunked input
+
+`create*` functions return an `IHasher` with its own WASM instance and internal state. Use them when:
+
+- Input arrives in chunks (files, sockets, streams)
+- You need concurrent hash calculations
+- You want binary output (`Uint8Array`) instead of hex
+
+## Example
+
+```js
+import { createSHA1 } from "crypto-hasher";
+
+async function run() {
+  const sha1 = await createSHA1();
+  sha1.init();
+
+  while (hasMoreData()) {
+    sha1.update(readChunk());
+  }
+
+  const hex = sha1.digest();              // hex string
+  // or: const bin = sha1.digest("binary"); // Uint8Array
+}
+
+run();
+```
+
+## Method chaining
+
+`init()`, `update()`, and `load()` return the hasher, so you can chain calls:
+
+```js
+const hash = (await createMD5())
+  .init()
+  .update("Hello, ")
+  .update("world!")
+  .digest();
+```
+
+## Concurrent hashing
+
+Each `create*` call allocates a separate WASM instance. That lets you hash multiple streams in parallel:
+
+```js
+const [h1, h2] = await Promise.all([createSHA256(), createSHA256()]);
+
+h1.init().update(streamA);
+h2.init().update(streamB);
+```
+
+## Reusing an instance
+
+Creating a new WASM instance is relatively expensive. For sequential hashes, call `init()` to reset state:
+
+```js
+const hasher = await createSHA256();
+
+for (const item of items) {
+  hasher.init();
+  hasher.update(item);
+  console.log(hasher.digest());
+}
+```
+
+Do **not** call `create*` inside a tight loop when you only need sequential hashes.
+
+## Shorthand vs create*
+
+| | Shorthand (`md5`) | Streaming (`createMD5`) |
+| - | ----------------- | ----------------------- |
+| Best for | Full buffer in memory | Chunks / streams |
+| WASM instances | Shared, cached | One per `create*` call |
+| Concurrent independent hashes | Limited (shared state) | Supported |
+| Output | Hex string | Hex or binary |
+| Speed (one-shot) | Faster | Slightly slower |
+
+## Lifecycle rules
+
+- Always call `init()` before the first `update()` (or after a previous `digest()`).
+- After `digest()`, the hasher must be `init()` again before reuse.
+- Calling `update()` or `digest()` before `init()` throws.
+
+Full interface details: [IHasher](/api/hasher).

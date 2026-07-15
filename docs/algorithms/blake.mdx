@@ -1,0 +1,56 @@
+---
+title: BLAKE family
+description: BLAKE2b, BLAKE2s, and BLAKE3 with optional keyed hashing.
+---
+
+# BLAKE family
+
+BLAKE2 and BLAKE3 are modern hashes designed for speed on software platforms. All three support optional **keyed** mode (MAC-like hashing).
+
+## BLAKE2b
+
+Optimized for 64-bit platforms. Output length is configurable from 8 to 512 bits (multiples of 8). Default: **512** bits. Optional key up to **64** bytes.
+
+```js
+import { blake2b, createBLAKE2b } from "crypto-hasher";
+
+await blake2b(data);                 // 512-bit
+await blake2b(data, 256);            // 256-bit
+await blake2b(data, 512, secretKey); // keyed
+
+const h = await createBLAKE2b(256, secretKey);
+```
+
+## BLAKE2s
+
+Optimized for 8–32-bit platforms. Output 8–256 bits (multiples of 8). Default: **256** bits. Optional key up to **32** bytes.
+
+```js
+import { blake2s, createBLAKE2s } from "crypto-hasher";
+
+await blake2s(data);
+await blake2s(data, 128, key);
+```
+
+## BLAKE3
+
+Very fast, parallelizable tree hash. Output length is any multiple of 8 bits (default **256**). If a key is provided, it must be **exactly 32 bytes**.
+
+```js
+import { blake3, createBLAKE3 } from "crypto-hasher";
+
+await blake3(data);
+await blake3(data, 512); // longer digest via XOF-style output length
+await blake3(data, 256, thirtyTwoByteKey);
+```
+
+## Choosing among them
+
+| Goal | Suggestion |
+| ---- | ---------- |
+| General modern hash (64-bit) | BLAKE2b or BLAKE3 |
+| Constrained / 32-bit style | BLAKE2s |
+| Maximum throughput | BLAKE3 |
+| Drop-in keyed MAC without HMAC | BLAKE2 / BLAKE3 with a key |
+
+For standardized HMAC over SHA-2/SHA-3, see [HMAC](/guides/hmac).

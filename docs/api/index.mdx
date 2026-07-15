@@ -1,0 +1,48 @@
+---
+title: API overview
+description: Entry points exported by crypto-hasher.
+---
+
+# API overview
+
+Everything is imported from the package root:
+
+```ts
+import {
+  md5,
+  createSHA256,
+  createHMAC,
+  pbkdf2,
+  argon2id,
+  type IDataType,
+  type IHasher,
+} from "crypto-hasher";
+```
+
+## Sections
+
+| Section | Contents |
+| ------- | -------- |
+| [Types](/api/types) | `IDataType`, output unions |
+| [Hash functions](/api/hash-functions) | Shorthand + `create*` for each algorithm |
+| [IHasher](/api/hasher) | Streaming hasher interface |
+| [HMAC](/api/hmac) | `createHMAC` |
+| [Key derivation](/api/key-derivation) | PBKDF2, scrypt, Argon2, bcrypt |
+
+## Common patterns
+
+```ts
+// One-shot → Promise<string> (hex)
+await sha256(data);
+
+// Streaming → IHasher
+const h = await createSHA256();
+h.init().update(data);
+h.digest();           // string
+h.digest("binary");   // Uint8Array
+
+// KDF → string | Uint8Array depending on outputType
+await argon2id({ ..., outputType: "encoded" });
+```
+
+All public hash and KDF entry points are **asynchronous** (they return `Promise`s) because WebAssembly module compilation/instantiation is async in many environments.

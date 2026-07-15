@@ -1,0 +1,49 @@
+---
+title: String encoding
+description: Normalize Unicode strings before hashing to avoid unexpected digests.
+---
+
+# String encoding pitfalls
+
+All algorithms in crypto-hasher operate on **bytes**. When you pass a JavaScript string, it is encoded as UTF-8. The same character can have more than one Unicode representation, so two strings that look identical can produce different hashes.
+
+## Example
+
+```js
+"\u00fc";     // ü as a single code point (U+00FC)
+"u\u0308";    // u + combining diaeresis (U+0308)
+
+"\u00fc" === "u\u0308"; // false
+"ü" === "ü";           // false — they look the same
+```
+
+Different byte sequences:
+
+```js
+const te = new TextEncoder();
+
+te.encode("u\u0308"); // Uint8Array(3) [117, 204, 136]
+te.encode("\u00fc");  // Uint8Array(2) [195, 188]
+```
+
+## Normalize before hashing
+
+Use `String.prototype.normalize()` so equivalent strings share one representation:
+
+```js
+"\u00fc".normalize() === "u\u0308".normalize(); // true
+
+const te = new TextEncoder();
+te.encode("u\u0308".normalize("NFKC")); // [195, 188]
+te.encode("\u00fc".normalize("NFKC"));  // [195, 188]
+
+import { sha256 } from "crypto-hasher";
+
+const a = await sha256("\u00fc".normalize("NFKC"));
+const b = await sha256("u\u0308".normalize("NFKC"));
+// a === b
+```
+
+NFKC is a common choice when you want compatibility decomposition plus canonical composition; pick the form your protocol requires and apply it consistently on every input.
+
+More background: [Unicode equivalence](https://en.wikipedia.org/wiki/Unicode_equivalence).

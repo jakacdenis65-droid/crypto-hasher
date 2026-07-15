@@ -1,0 +1,52 @@
+---
+title: PBKDF2
+description: Derive keys from passwords using PBKDF2 with any crypto-hasher digest.
+---
+
+# PBKDF2
+
+PBKDF2 (Password-Based Key Derivation Function 2) stretches a password with a salt and many HMAC iterations. crypto-hasher implements it on top of `createHMAC` and your chosen hash algorithm.
+
+## Example
+
+```js
+import { pbkdf2, createSHA1 } from "crypto-hasher";
+
+async function run() {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+
+  const key = await pbkdf2({
+    password: "password",
+    salt,
+    iterations: 1000,
+    hashLength: 32,
+    hashFunction: createSHA1(),
+    outputType: "hex",
+  });
+
+  console.log("Derived key:", key);
+}
+
+run();
+```
+
+## Options
+
+| Option | Description |
+| ------ | ----------- |
+| `password` | Password or message |
+| `salt` | Salt bytes (typically random) |
+| `iterations` | Iteration count (≥ 1); higher is slower and stronger |
+| `hashLength` | Desired key length in bytes |
+| `hashFunction` | Promise from `createSHA1()`, `createSHA256()`, etc. |
+| `outputType` | `'hex'` (default) or `'binary'` |
+
+## Choosing parameters
+
+- Prefer a strong underlying hash such as SHA-256 or SHA-512 for new work.
+- Iteration counts should be high enough that a single derivation takes a meaningful amount of time on your servers (often tens to hundreds of thousands, depending on the hash).
+- For interactive password storage, consider [Argon2id](/guides/passwords) instead — it is memory-hard and usually a better default than PBKDF2.
+
+## Return type
+
+When `outputType` is `'binary'`, the resolved value is a `Uint8Array`. Otherwise it is a hex string. TypeScript overloads reflect this based on the options you pass.

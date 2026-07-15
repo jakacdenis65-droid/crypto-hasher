@@ -1,0 +1,130 @@
+---
+title: Changelog
+description: Release history for crypto-hasher.
+---
+
+# Changelog
+
+## 4.12.0 (November 19, 2024)
+
+- **BREAKING CHANGE**: `crc32c()` and `createCRC32C()` were removed. Use `crc32()` / `createCRC32()` with polynomial `0x82F63B78`
+- Added CRC-64 hash function
+- Exported `IDataType`, `IHasher` types from `index.ts`
+- Updated benchmarks and dependencies (including Clang)
+- Migrated from ESLint to Biome
+
+## 4.11.0 (November 13, 2023)
+
+- Added `secret` parameter to Argon2
+
+## 4.10.0 (October 15, 2023)
+
+- Added `sideEffects: false` to `package.json`
+- Updated dependencies, including Clang
+
+## 4.9.0 (July 22, 2021)
+
+- Added CRC32C
+- Updated dependencies, including Clang
+
+## 4.8.0 (June 27, 2021)
+
+- Optimized Adler-32 for WASM
+- Added `xxhash3()` and `xxhash128()`
+- Slightly faster `xxhash32()` and `xxhash64()`
+
+## 4.7.0 (June 5, 2021)
+
+- Added Adler-32
+- Saving and loading internal hash state (segmented hashing / rewinding)
+- Faster builds using GNU Make
+- Alignment and dependency updates
+
+## 4.6.0 (March 26, 2021)
+
+- Smaller CRC32 binary (lookup table built on first run)
+- WASM instances allocate 128 kB instead of 256 kB
+
+## 4.5.0 (March 6, 2021)
+
+- Added BLAKE3
+- BLAKE2 performance improvements
+
+## 4.4.1 (November 22, 2020)
+
+- Added JSDoc annotations
+
+## 4.4.0 (November 8, 2020)
+
+- Added Whirlpool and SM3
+- Fixed BLAKE block size
+- Switched compiler from Emscripten to Clang
+- Fixed xxhash64 cached seed invalidation
+- Minified per-algorithm bundles
+
+## 4.3.0 (October 10, 2020)
+
+- Added BLAKE2s
+- Documented bundle sizes
+
+## 4.2.2 (September 19, 2020)
+
+- Added bcrypt
+- Added `argon2Verify()` (now `argon2Verify`)
+
+## 4.1.0 (September 5, 2020)
+
+- Added scrypt
+- Improved TypeScript return types for KDFs
+- Documented string encoding pitfalls
+
+## 4.0.1 (August 29, 2020)
+
+- **BREAKING**: `argon2()` split into `argon2i()`, `argon2d()`, `argon2id()`
+- **BREAKING**: `pbkdf2()` now takes a single options object
+
+## 3.7.0 – 3.7.2
+
+- Added Argon2
+- BLAKE2b hash lengths shorter than 16 bytes
+- Codecov / badge / style improvements
+
+## 3.6.0 (July 25, 2020)
+
+- **Breaking**: dropped `String()` object support (string literals still work)
+- Removed need for Node.js buffer polyfills
+
+## 3.5.0 (July 19, 2020)
+
+- Added BLAKE2b
+- Fixed SHA-3 / Keccak when hash length changed
+
+## 3.4.0 (June 27, 2020)
+
+- Added PBKDF2
+
+## 3.3.0 (June 22, 2020)
+
+- Added RIPEMD-160
+
+## 3.2.0 (June 5, 2020)
+
+- Added HMAC
+
+## 3.0.0 – 3.1.x
+
+- Faster small-input hashing
+- Performance improvements for small buffers
+
+## 2.x
+
+- Concurrent hash calculations with multiple states
+- WASM module caching
+- Added xxHash32/64 and Keccak
+- Faster SHA-256 / SHA-512 implementations
+
+## 2.0.0 (April 11, 2020)
+
+- Initial release
+
+For the full narrative history, see [`CHANGELOG.md`](https://github.com/CRYPTO-HASHER/crypto-hasher/blob/master/CHANGELOG.md) in the repository.

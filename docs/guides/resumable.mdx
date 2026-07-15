@@ -1,0 +1,44 @@
+---
+title: Resumable hashing
+description: Save and restore hasher state for segmented hashing and rewind.
+---
+
+# Resumable hashing
+
+Every `IHasher` exposes `.save()` and `.load(state)` so you can pause a hash, persist the internal state, and continue later — even in another process.
+
+Useful for:
+
+- Hashing large files across serverless invocations with short timeouts
+- Splitting work across processes
+- Rewinding to an earlier point in a stream
+
+## Example
+
+```js
+import { createMD5 } from "crypto-hasher";
+
+// Process A — start hashing and checkpoint
+const md5a = await createMD5();
+md5a.init();
+md5a.update("Hello, ");
+const state = md5a.save();
+
+// Process B — resume from the saved state
+const md5b = await createMD5();
+md5b.load(state);
+md5b.update("world!");
+console.log(md5b.digest());
+// 6cd3556deb0da54bca060b4c39479839  (= md5("Hello, world!"))
+```
+
+## Rules and constraints
+
+- Call `save()` only **after** `init()` / `load()` and **before** `digest()`.
+- The saved blob is version-sensitive: saving and loading must use a **compatible crypto-hasher build**. An incompatible state throws.
+- HMAC does not support `save` / `load`.
+- Treat saved state like sensitive plaintext: it may contain information about the input (including raw input bytes).
+
+## How compatibility works
+
+Each saved state is prefixed with a short hash of the algorithm’s WASM binary. `load()` verifies that prefix before restoring memory. If the prefix does not match, you get an error about an incompatible hash implementation.
